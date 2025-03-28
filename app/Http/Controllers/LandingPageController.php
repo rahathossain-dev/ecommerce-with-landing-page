@@ -44,6 +44,7 @@ class LandingPageController extends Controller
     {
         $deleveryOptions = DeleveryZone::all();
         $landingPageData = PageSetup::where('landing_page_id', $id)->with('sections', 'faqs')->first();
+        // return $landingPageData;
         return view('admin-views.landing-page.setup', [
             'deleveryOptions' => $deleveryOptions,
             'landing_page_id' => $id,
@@ -62,7 +63,7 @@ class LandingPageController extends Controller
             'title' => 'required|string|max:255',
             'description' => 'required',
             'section.*.title' => 'required|string|max:255',
-            'section.*.button_text' => 'required|string|max:255',
+            'section.*.button_text' => 'string|max:255',
             'section.*.button_link' => 'max:255',
             'section.*.banner' => 'mimes:jpg,png,jpeg,gif,svg',
             'customer_review.*' => 'mimes:jpg,png,jpeg,gif,svg'
@@ -77,23 +78,29 @@ class LandingPageController extends Controller
             'delevery_id' => $request->delevery_option,
             'landing_page_id' => $request->landing_page_id
         ]);
+        if (is_array($request->section)) {
 
-        foreach ($request->section as $section) {
-            if (isset($section['banner'])) {
-                $image = ImageManager::upload('landing-page/', 'png', $section['banner']);
-            } else {
-                $image = null;
+            LandingPageSection::where('page_id', $page->id)->delete();
+
+            foreach ($request->section as $section) {
+                if (isset($section['banner'])) {
+                    $image = ImageManager::upload('landing-page/', 'png', $section['banner']);
+                } else {
+                    $image = null;
+                }
+                LandingPageSection::create([
+                    'page_id' => $page->id,
+                    'title' => $section['title'],
+                    'description' => $section['description'],
+                    'button_text' => $section['button_text'],
+                    'button_link' => $section['button_link'],
+                    'banner' => $image
+                ]);
             }
-            LandingPageSection::updateOrCreate(['page_id' => $page->id], [
-                'page_id' => $page->id,
-                'title' => $section['title'],
-                'description' => $section['description'],
-                'button_text' => $section['button_text'],
-                'button_link' => $section['button_link'],
-                'banner' => $image
-            ]);
         }
+
         if ($request->hasFile('customer_review')) {
+            LandingPageReview::where('page_id', $page->id)->delete();
             foreach ($request->customer_review as $banner) {
                 $image = ImageManager::upload('landing-page/', 'png', $banner);
                 LandingPageReview::updateOrCreate(['page_id' => $page->id], [
@@ -103,12 +110,16 @@ class LandingPageController extends Controller
             }
         }
 
-        foreach ($request->faq as $faq) {
-            LandingPageFaq::updateOrCreate(['page_id' => $page->id], [
-                'page_id' => $page->id,
-                'question' => $faq['question'],
-                'answare' => $faq['answare']
-            ]);
+        if (is_array($request->faq)) {
+            LandingPageFaq::where('page_id', $page->id)->delete();
+            foreach ($request->faq as $faq) {
+
+                LandingPageFaq::create([
+                    'page_id' => $page->id,
+                    'question' => $faq['question'],
+                    'answare' => $faq['answare']
+                ]);
+            }
         }
 
 

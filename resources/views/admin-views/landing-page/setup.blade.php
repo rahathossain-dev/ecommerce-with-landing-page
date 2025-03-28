@@ -89,10 +89,10 @@
                                         <h2>Section</h2>
                                         <div id="accordion">
                                             @if ($data->sections->count() > 0)
-                                                @foreach ($data->sections as $section)
+                                                @foreach ($data->sections as $key => $section)
                                                     <div class="accordion-item">
                                                         <div class="accordion-header" onclick="expandAccordion(event)">
-                                                            Section 1
+                                                            Section {{ ++$key }}
                                                             <i class="fas fa-chevron-down"></i>
                                                         </div>
                                                         <div class="accordion-content">
@@ -110,7 +110,7 @@
                                                                     <div class="form-group lang_form">
                                                                         <label class="input-label"
                                                                             for="exampleFormControlInput1">{{\App\CPU\translate('Description')}}</label>
-                                                                        <textarea id="sectionEditor"
+                                                                        <textarea class="sectionEditor"
                                                                             name="section[1][description]" class="form-control"
                                                                             placeholder="Description">{{ $section->description }}</textarea>
                                                                     </div>
@@ -165,7 +165,7 @@
                                                                 <div class="form-group lang_form">
                                                                     <label class="input-label"
                                                                         for="exampleFormControlInput1">{{\App\CPU\translate('Description')}}</label>
-                                                                    <textarea id="sectionEditor"
+                                                                    <textarea class="sectionEditor"
                                                                         name="section[1][description]" class="form-control"
                                                                         placeholder="Description"></textarea>
                                                                 </div>
@@ -213,10 +213,10 @@
                                         <h2>FAQ</h2>
                                         <div id="faq">
                                             @if ($data->faqs->count() > 0)
-                                                @foreach ($data->faqs as $faqItem)
+                                                @foreach ($data->faqs as $key => $faqItem)
                                                     <div class="faq-item">
                                                         <div class="faq-header" onclick="expandFaq(event)">
-                                                            FAQ 1
+                                                            FAQ {{ ++$key }}
                                                             <i class="fas fa-chevron-down"></i>
                                                         </div>
                                                         <div class="faq-content">
@@ -234,7 +234,7 @@
                                                                     <div class="form-group lang_form">
                                                                         <label class="input-label"
                                                                             for="exampleFormControlInput1">{{\App\CPU\translate('Description')}}</label>
-                                                                        <textarea id="faqEditor" name="faq[1][answare]"
+                                                                        <textarea class="faqEditor" name="faq[1][answare]"
                                                                             class="form-control"
                                                                             placeholder="Answare">{{ $faqItem->answare }}</textarea>
                                                                     </div>
@@ -263,7 +263,7 @@
                                                                 <div class="form-group lang_form">
                                                                     <label class="input-label"
                                                                         for="exampleFormControlInput1">{{\App\CPU\translate('Description')}}</label>
-                                                                    <textarea id="faqEditor" name="faq[1][answare]"
+                                                                    <textarea class="faqEditor" name="faq[1][answare]"
                                                                         class="form-control"
                                                                         placeholder="Answare"></textarea>
                                                                 </div>
@@ -591,37 +591,42 @@
         .then()
         .catch( /* ... */);
 
+    window.document.querySelectorAll('.sectionEditor').forEach((elementItem) => {
+        ClassicEditor
+            .create(elementItem, {
+                licenseKey: 'eyJhbGciOiJFUzI1NiJ9.eyJleHAiOjE3NzM5NjQ3OTksImp0aSI6IjViMTMxYTZkLTJmZDQtNDAxMS1hNDc2LWFlYmNmMTZiZDI0NyIsImxpY2Vuc2VkSG9zdHMiOlsiMTI3LjAuMC4xIiwibG9jYWxob3N0IiwiMTkyLjE2OC4qLioiLCIxMC4qLiouKiIsIjE3Mi4qLiouKiIsIioudGVzdCIsIioubG9jYWxob3N0IiwiKi5sb2NhbCJdLCJ1c2FnZUVuZHBvaW50IjoiaHR0cHM6Ly9wcm94eS1ldmVudC5ja2VkaXRvci5jb20iLCJkaXN0cmlidXRpb25DaGFubmVsIjpbImNsb3VkIiwiZHJ1cGFsIl0sImxpY2Vuc2VUeXBlIjoiZGV2ZWxvcG1lbnQiLCJmZWF0dXJlcyI6WyJEUlVQIl0sInZjIjoiMjFkYThhZmYifQ.o_bE99T6xXDu-4gt08RCxo4gJOG_-9AZ8wsoNQ1OH1C0MOfAV5dpK3X4Lzhf43m7leYZxXSeUJh16Hg0_npCcQ',
+                plugins: [Essentials, Bold, Italic, Font, Paragraph, Alignment, Heading, Image, ImageUpload, Table, TableToolbar, Link, Underline, SourceEditing, ListItem],
+                toolbar: [
+                    'undo', 'redo', '|', 'bold', 'italic', '|',
+                    'fontSize', 'fontFamily', 'fontColor', 'fontBackgroundColor', '|',
+                    'heading', 'imageUpload', 'link', 'insertTable', ' | ',
+                    'bulletedList', 'numberedList', 'alignment', 'underline', 'sourceEditing'
+                ]
+            })
+            .then()
+            .catch( /* ... */);
+    })
+    window.document.querySelectorAll('.faqEditor').forEach((elementItem) => {
 
-    ClassicEditor
-        .create(document.querySelector('#sectionEditor'), {
-            licenseKey: 'eyJhbGciOiJFUzI1NiJ9.eyJleHAiOjE3NzM5NjQ3OTksImp0aSI6IjViMTMxYTZkLTJmZDQtNDAxMS1hNDc2LWFlYmNmMTZiZDI0NyIsImxpY2Vuc2VkSG9zdHMiOlsiMTI3LjAuMC4xIiwibG9jYWxob3N0IiwiMTkyLjE2OC4qLioiLCIxMC4qLiouKiIsIjE3Mi4qLiouKiIsIioudGVzdCIsIioubG9jYWxob3N0IiwiKi5sb2NhbCJdLCJ1c2FnZUVuZHBvaW50IjoiaHR0cHM6Ly9wcm94eS1ldmVudC5ja2VkaXRvci5jb20iLCJkaXN0cmlidXRpb25DaGFubmVsIjpbImNsb3VkIiwiZHJ1cGFsIl0sImxpY2Vuc2VUeXBlIjoiZGV2ZWxvcG1lbnQiLCJmZWF0dXJlcyI6WyJEUlVQIl0sInZjIjoiMjFkYThhZmYifQ.o_bE99T6xXDu-4gt08RCxo4gJOG_-9AZ8wsoNQ1OH1C0MOfAV5dpK3X4Lzhf43m7leYZxXSeUJh16Hg0_npCcQ',
-            plugins: [Essentials, Bold, Italic, Font, Paragraph, Alignment, Heading, Image, ImageUpload, Table, TableToolbar, Link, Underline, SourceEditing, ListItem],
-            toolbar: [
-                'undo', 'redo', '|', 'bold', 'italic', '|',
-                'fontSize', 'fontFamily', 'fontColor', 'fontBackgroundColor', '|',
-                'heading', 'imageUpload', 'link', 'insertTable', ' | ',
-                'bulletedList', 'numberedList', 'alignment', 'underline', 'sourceEditing'
-            ]
-        })
-        .then()
-        .catch( /* ... */);
-    ClassicEditor
-        .create(document.getElementById('faqEditor'), {
-            licenseKey: 'eyJhbGciOiJFUzI1NiJ9.eyJleHAiOjE3NzM5NjQ3OTksImp0aSI6IjViMTMxYTZkLTJmZDQtNDAxMS1hNDc2LWFlYmNmMTZiZDI0NyIsImxpY2Vuc2VkSG9zdHMiOlsiMTI3LjAuMC4xIiwibG9jYWxob3N0IiwiMTkyLjE2OC4qLioiLCIxMC4qLiouKiIsIjE3Mi4qLiouKiIsIioudGVzdCIsIioubG9jYWxob3N0IiwiKi5sb2NhbCJdLCJ1c2FnZUVuZHBvaW50IjoiaHR0cHM6Ly9wcm94eS1ldmVudC5ja2VkaXRvci5jb20iLCJkaXN0cmlidXRpb25DaGFubmVsIjpbImNsb3VkIiwiZHJ1cGFsIl0sImxpY2Vuc2VUeXBlIjoiZGV2ZWxvcG1lbnQiLCJmZWF0dXJlcyI6WyJEUlVQIl0sInZjIjoiMjFkYThhZmYifQ.o_bE99T6xXDu-4gt08RCxo4gJOG_-9AZ8wsoNQ1OH1C0MOfAV5dpK3X4Lzhf43m7leYZxXSeUJh16Hg0_npCcQ',
-            plugins: [Essentials, Bold, Italic, Font, Paragraph, Alignment, Heading, Image, ImageUpload, Table, TableToolbar, Link, Underline, SourceEditing, ListItem],
-            toolbar: [
-                'undo', 'redo', '|', 'bold', 'italic', '|',
-                'fontSize', 'fontFamily', 'fontColor', 'fontBackgroundColor', '|',
-                'heading', 'imageUpload', 'link', 'insertTable', '|',
-                'bulletedList', 'numberedList', 'alignment', 'underline', 'sourceEditing'
-            ]
-        })
-        .then(editor => {
-            // Set the height of the editor after initialization
-            const editorContainer = editor.ui.view.editable.element;
-            editorContainer.style.height = '400px'; // Set the height here
-        })
-        .catch( /* ... */);
+        ClassicEditor
+            .create(elementItem, {
+                licenseKey: 'eyJhbGciOiJFUzI1NiJ9.eyJleHAiOjE3NzM5NjQ3OTksImp0aSI6IjViMTMxYTZkLTJmZDQtNDAxMS1hNDc2LWFlYmNmMTZiZDI0NyIsImxpY2Vuc2VkSG9zdHMiOlsiMTI3LjAuMC4xIiwibG9jYWxob3N0IiwiMTkyLjE2OC4qLioiLCIxMC4qLiouKiIsIjE3Mi4qLiouKiIsIioudGVzdCIsIioubG9jYWxob3N0IiwiKi5sb2NhbCJdLCJ1c2FnZUVuZHBvaW50IjoiaHR0cHM6Ly9wcm94eS1ldmVudC5ja2VkaXRvci5jb20iLCJkaXN0cmlidXRpb25DaGFubmVsIjpbImNsb3VkIiwiZHJ1cGFsIl0sImxpY2Vuc2VUeXBlIjoiZGV2ZWxvcG1lbnQiLCJmZWF0dXJlcyI6WyJEUlVQIl0sInZjIjoiMjFkYThhZmYifQ.o_bE99T6xXDu-4gt08RCxo4gJOG_-9AZ8wsoNQ1OH1C0MOfAV5dpK3X4Lzhf43m7leYZxXSeUJh16Hg0_npCcQ',
+                plugins: [Essentials, Bold, Italic, Font, Paragraph, Alignment, Heading, Image, ImageUpload, Table, TableToolbar, Link, Underline, SourceEditing, ListItem],
+                toolbar: [
+                    'undo', 'redo', '|', 'bold', 'italic', '|',
+                    'fontSize', 'fontFamily', 'fontColor', 'fontBackgroundColor', '|',
+                    'heading', 'imageUpload', 'link', 'insertTable', '|',
+                    'bulletedList', 'numberedList', 'alignment', 'underline', 'sourceEditing'
+                ]
+            })
+            .then(editor => {
+                // Set the height of the editor after initialization
+                const editorContainer = editor.ui.view.editable.element;
+                editorContainer.style.height = '400px'; // Set the height here
+            })
+            .catch( /* ... */);
+    })
+
 
 
 </script>
