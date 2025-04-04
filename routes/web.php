@@ -11,17 +11,18 @@
 |
  */
 
+use App\Http\Controllers\LandingPageController;
 use Illuminate\Support\Facades\Route;
 
 //for maintenance mode
 Route::get('maintenance-mode', 'Web\WebController@maintenance_mode')->name('maintenance-mode');
 
-Route::group(['namespace' => 'Web','middleware'=>['maintenance_mode']], function () {
+Route::group(['namespace' => 'Web', 'middleware' => ['maintenance_mode']], function () {
     Route::get('/', 'WebController@home')->name('home');
     Route::get('quick-view', 'WebController@quick_view')->name('quick-view');
     Route::get('searched-products', 'WebController@searched_products')->name('searched-products');
     Route::get('checkout-details', 'WebController@checkout_details')->name('checkout-details');
-    Route::group(['middleware'=>['customer']], function () {
+    Route::group(['middleware' => ['customer']], function () {
         // Route::get('checkout-details', 'WebController@checkout_details')->name('checkout-details');
         Route::get('checkout-shipping', 'WebController@checkout_shipping')->name('checkout-shipping')->middleware('customer');
         Route::get('checkout-payment', 'WebController@checkout_payment')->name('checkout-payment')->middleware('customer');
@@ -187,7 +188,7 @@ Route::match(['get', 'post'], '/return-senang-pay', 'SenangPayController@return_
 //paystack
 Route::post('/paystack-pay', 'PaystackController@redirectToGateway')->name('paystack-pay');
 Route::get('/paystack-callback', 'PaystackController@handleGatewayCallback')->name('paystack-callback');
-Route::get('/paystack',function (){
+Route::get('/paystack', function () {
     return view('paystack');
 });
 
@@ -201,7 +202,7 @@ Route::any('/paytabs-payment', 'PaytabsController@payment')->name('paytabs-payme
 Route::any('/paytabs-response', 'PaytabsController@callback_response')->name('paytabs-response');
 
 //bkash
-Route::group(['prefix'=>'bkash'], function () {
+Route::group(['prefix' => 'bkash'], function () {
     // Payment Routes for bKash
     Route::post('get-token', 'BkashPaymentController@getToken')->name('bkash-get-token');
     Route::post('create-payment', 'BkashPaymentController@createPayment')->name('bkash-create-payment');
@@ -212,13 +213,19 @@ Route::group(['prefix'=>'bkash'], function () {
     // Refund Routes for bKash
     Route::get('refund', 'BkashRefundController@index')->name('bkash-refund');
     Route::post('refund', 'BkashRefundController@refund')->name('bkash-refund');
+
+
+
+    // Landing Page
+
 });
+Route::get('/product/page/{slug}', [LandingPageController::class, 'landingPage'])->name('landingPage');
 
 //fawry
 Route::any('/fawry-payment', 'FawryPaymentController@payment')->name('fawry-payment');
 Route::any('/fawry-response', 'FawryPaymentController@callback_response')->name('fawry-response');
 
 
-Route::get('/test', function (){
+Route::get('/test', function () {
     return view('welcome');
 });

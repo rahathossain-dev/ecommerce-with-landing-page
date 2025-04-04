@@ -11,4 +11,9 @@ class DeleveryCharge extends Model
         'name',
         'charge'
     ];
+
+    public function charges()
+    {
+        return $this->hasMany(DeleveryCharge::class, 'id', 'zone_id');
+    }
 }

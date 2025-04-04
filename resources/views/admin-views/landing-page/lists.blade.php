@@ -81,6 +81,10 @@
                                         <td>{{$page->slug}}</td>
                                         <td>
                                             <a class="btn btn-primary btn-sm edit" style="cursor: pointer;"
+                                                href="{{route('landingPage', [$page->slug])}}">
+                                                <i class="tio-eye"></i> View
+                                            </a>
+                                            <a class="btn btn-primary btn-sm edit" style="cursor: pointer;"
                                                 href="{{route('admin.landingPage.setup', [$page->id])}}">
                                                 <i class="tio-edit"></i> Setup
                                             </a>

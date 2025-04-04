@@ -17,7 +17,7 @@ class CreateLandingPageSectionsTable extends Migration
             $table->bigIncrements('id');
             $table->integer('page_id');
             $table->string('title');
-            $table->string('description')->nullable();
+            $table->text('description')->nullable();
             $table->string('banner')->nullable();
             $table->string('button_text')->nullable();
             $table->string('button_link')->nullable();

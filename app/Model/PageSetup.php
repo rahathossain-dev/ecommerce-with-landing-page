@@ -30,4 +30,14 @@ class PageSetup extends Model
     {
         return $this->hasMany(LandingPageReview::class, 'page_id', 'id');
     }
+
+    public function product()
+    {
+        return $this->hasOne(Product::class, 'id', 'product_id');
+    }
+
+    public function delivery()
+    {
+        return $this->hasOne(DeleveryZone::class, 'id', 'delevery_id')->with('deleveryCharge', 'charges');
+    }
 }

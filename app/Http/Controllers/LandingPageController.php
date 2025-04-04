@@ -99,11 +99,11 @@ class LandingPageController extends Controller
             }
         }
 
-        if ($request->hasFile('customer_review')) {
+        if ($request->hasFile('customer_review.*')) {
             LandingPageReview::where('page_id', $page->id)->delete();
             foreach ($request->customer_review as $banner) {
                 $image = ImageManager::upload('landing-page/', 'png', $banner);
-                LandingPageReview::updateOrCreate(['page_id' => $page->id], [
+                LandingPageReview::create([
                     'page_id' => $page->id,
                     'banner' => $image
                 ]);
@@ -212,6 +212,40 @@ class LandingPageController extends Controller
 
         Toastr::success('Deleted successfully!');
         return back();
+    }
+
+    public function deleveryChargeStore(Request $request)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'zone_id' => 'required',
+            'value' => 'required'
+        ]);
+
+        DeleveryCharge::create([
+            'name' => $request->name,
+            'charge' => $request->value
+        ]);
+        Toastr::success('Save successfully!');
+        return back();
+
+    }
+
+
+    // Landing Page view
+
+    public function landingPage($slug)
+    {
+        $page = LandingPage::where('slug', $slug)->first();
+        if (!$page) {
+            return abort(404);
+        }
+
+        $pageInfo = PageSetup::where('landing_page_id', $page->id)->with('product', 'delivery', 'customer_reviews', 'delivery')->first();
+        return Response()->json($pageInfo);
+        return view('admin-views.landing-page.view', [
+            'pageInfo' => $pageInfo
+        ]);
     }
 
 

@@ -64,7 +64,7 @@
                                 <div class="form-group lang_form">
                                     <label class="input-label"
                                         for="exampleFormControlInput1">{{\App\CPU\translate('Offer Time')}}</label>
-                                    <input type="date" value="{{ $data->offer_time ?? '' }}" name="offer_time"
+                                    <input type="datetime-local" value="{{ $data->offer_time ?? '' }}" name="offer_time"
                                         class="form-control" />
                                 </div>
                             </div>
@@ -102,7 +102,7 @@
                                                                         <label class="input-label"
                                                                             for="exampleFormControlInput1">{{\App\CPU\translate('Title')}}</label>
                                                                         <input type="text" value="{{ $section->title }}"
-                                                                            name="section[1][title]" class="form-control"
+                                                                            name="section[{{$key}}][title]" class="form-control"
                                                                             placeholder="Title">
                                                                     </div>
                                                                 </div>
@@ -111,7 +111,8 @@
                                                                         <label class="input-label"
                                                                             for="exampleFormControlInput1">{{\App\CPU\translate('Description')}}</label>
                                                                         <textarea class="sectionEditor"
-                                                                            name="section[1][description]" class="form-control"
+                                                                            name="section[{{ $key }}][description]"
+                                                                            class="form-control"
                                                                             placeholder="Description">{{ $section->description }}</textarea>
                                                                     </div>
                                                                 </div>
@@ -119,7 +120,7 @@
                                                                     <div class="form-group lang_form">
                                                                         <label class="input-label"
                                                                             for="exampleFormControlInput1">{{\App\CPU\translate('Banner')}}</label>
-                                                                        <input type="file" name="section[1][banner]"
+                                                                        <input type="file" name="section[{{ $key }}][banner]"
                                                                             class="form-control">
                                                                     </div>
                                                                 </div>
@@ -128,8 +129,8 @@
                                                                         <label class="input-label"
                                                                             for="exampleFormControlInput1">{{\App\CPU\translate('Button Text')}}</label>
                                                                         <input type="text" value="{{ $section->button_text }}"
-                                                                            name="section[1][button_text]" class="form-control"
-                                                                            placeholder="Button Text">
+                                                                            name="section[{{ $key }}][button_text]"
+                                                                            class="form-control" placeholder="Button Text">
                                                                     </div>
                                                                 </div>
                                                                 <div class="col-12">
@@ -137,8 +138,8 @@
                                                                         <label class="input-label"
                                                                             for="exampleFormControlInput1">{{\App\CPU\translate('Button Link')}}</label>
                                                                         <input type="text" value="{{ $section->button_link }}"
-                                                                            name="section[1][button_link]" class="form-control"
-                                                                            placeholder="Button Link">
+                                                                            name="section[{{ $key }}][button_link]"
+                                                                            class="form-control" placeholder="Button Link">
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -226,7 +227,7 @@
                                                                         <label class="input-label"
                                                                             for="exampleFormControlInput1">{{\App\CPU\translate('Title')}}</label>
                                                                         <input value="{{ $faqItem->question }}" type="text"
-                                                                            name="faq[1][question]" class="form-control"
+                                                                            name="faq[{{ $key }}][question]" class="form-control"
                                                                             placeholder="Question">
                                                                     </div>
                                                                 </div>
@@ -234,7 +235,7 @@
                                                                     <div class="form-group lang_form">
                                                                         <label class="input-label"
                                                                             for="exampleFormControlInput1">{{\App\CPU\translate('Description')}}</label>
-                                                                        <textarea class="faqEditor" name="faq[1][answare]"
+                                                                        <textarea class="faqEditor" name="faq[{{ $key }}][answare]"
                                                                             class="form-control"
                                                                             placeholder="Answare">{{ $faqItem->answare }}</textarea>
                                                                     </div>
@@ -280,9 +281,9 @@
                             </div>
                             <div class="col-md-12">
                                 <label for="name">{{ \App\CPU\translate('Add product')}}</label>
-                                <select value="{{ $data->product_id ?? '' }}"
+                                <select
                                     class="js-example-basic-multiple js-states js-example-responsive form-control"
-                                    name="product_id">
+                                    name="product_id" id="product_id">
                                     @foreach (\App\Model\Product::orderBy('name', 'asc')->get() as $key => $product)
                                         <option value="{{ $product->id }}">
                                             {{$product['name']}}
@@ -292,9 +293,9 @@
                             </div>
                             <div class="col-md-12">
                                 <label for="name">{{ \App\CPU\translate('Delevery Option')}}</label>
-                                <select value="{{ $data->delevery_id ?? '' }}"
+                                <select
                                     class="js-example-basic-multiple js-states js-example-responsive form-control"
-                                    name="delevery_option">
+                                    name="delevery_option" id="delevery_option">
                                     @foreach ($deleveryOptions as $key => $deleveryOption)
                                         <option value="{{ $deleveryOption->id }}">
                                             {{$deleveryOption->name}}
@@ -386,6 +387,8 @@
 </style>
 
 <script>
+    document.getElementById('product_id').value="{{ $data->product_id }}"
+    document.getElementById('delevery_option').value="{{ $data->delevery_id ?? '' }}"
     function expandFaq(e, elementData = null) {
         e.preventDefault();
         e.target.classList.toggle("active");
