@@ -171,6 +171,8 @@
             });
         });
     </script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
     <style>
         #header:has(:not(.header-bottom)):not(.header-padded-top)>#top,
         #header.header-padded-top:not(.header-top-transparent) #top .box-inner {
@@ -1039,7 +1041,7 @@
                     </div>
                     <div class="" style="margin-top: 15px">
                         @if (
-                            collect($pageInfo->delivery->charge)->contains(function ($item) {
+                            collect($pageInfo->delivery->deleveryCharge)->contains(function ($item) {
                                 return $item['charge'] == 0;
                             })
                         )
@@ -1094,9 +1096,9 @@
                             <div class="row" style="position: relative; margin-top: 20px">
                                 <div class="col col-2 col-sm-12 col-xs-12"
                                     style="
-                                                                                                                                                                                                                                                                                                                                                                padding-left: 0 !important;
-                                                                                                                                                                                                                                                                                                                                                                padding-right: 0 !important;
-                                                                                                                                                                                                                                                                                                                                                              ">
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                padding-left: 0 !important;
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                padding-right: 0 !important;
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              ">
                                     <svg id="wave" style="transform: rotate(0deg); transition: 0.3s" viewBox="0 0 1440 130"
                                         version="1.1" xmlns="http://www.w3.org/2000/svg">
                                         <defs>
@@ -1128,12 +1130,7 @@
                                             d="M0,13L34.3,10.8C68.6,9,137,4,206,21.7C274.3,39,343,78,411,93.2C480,108,549,100,617,97.5C685.7,95,754,100,823,97.5C891.4,95,960,87,1029,86.7C1097.1,87,1166,95,1234,86.7C1302.9,78,1371,52,1440,36.8C1508.6,22,1577,17,1646,32.5C1714.3,48,1783,82,1851,97.5C1920,113,1989,108,2057,91C2125.7,74,2194,43,2263,39C2331.4,35,2400,56,2469,58.5C2537.1,61,2606,43,2674,36.8C2742.9,30,2811,35,2880,34.7C2948.6,35,3017,30,3086,30.3C3154.3,30,3223,35,3291,45.5C3360,56,3429,74,3497,75.8C3565.7,78,3634,65,3703,52C3771.4,39,3840,26,3909,36.8C3977.1,48,4046,82,4114,80.2C4182.9,78,4251,39,4320,21.7C4388.6,4,4457,9,4526,26C4594.3,43,4663,74,4731,82.3C4800,91,4869,78,4903,71.5L4937.1,65L4937.1,130L4902.9,130C4868.6,130,4800,130,4731,130C4662.9,130,4594,130,4526,130C4457.1,130,4389,130,4320,130C4251.4,130,4183,130,4114,130C4045.7,130,3977,130,3909,130C3840,130,3771,130,3703,130C3634.3,130,3566,130,3497,130C3428.6,130,3360,130,3291,130C3222.9,130,3154,130,3086,130C3017.1,130,2949,130,2880,130C2811.4,130,2743,130,2674,130C2605.7,130,2537,130,2469,130C2400,130,2331,130,2263,130C2194.3,130,2126,130,2057,130C1988.6,130,1920,130,1851,130C1782.9,130,1714,130,1646,130C1577.1,130,1509,130,1440,130C1371.4,130,1303,130,1234,130C1165.7,130,1097,130,1029,130C960,130,891,130,823,130C754.3,130,686,130,617,130C548.6,130,480,130,411,130C342.9,130,274,130,206,130C137.1,130,69,130,34,130L0,130Z">
                                         </path>
                                     </svg>
-                                    <div
-                                        style="
-                                                                                                                                                                                                                                                                                                                                                                  background-color: #ffefdf;
-                                                                                                                                                                                                                                                                                                                                                                  margin-top: -27px;
-                                                                                                                                                                                                                                                                                                                                                                  padding-bottom: 20px;
-                                                                                                                                                                                                                                                                                                                                                                ">
+                                    <div style="background-color: #ffefdf;margin-top: -27px;padding-bottom: 20px;">
                                         <h2 class="title" style="padding-top: 25px">
                                             {{ $section->title }}
                                         </h2>
@@ -1295,6 +1292,7 @@
                         });
                     </script>
                     <script>
+
                         window.addEventListener("load", function () {
                             document.querySelectorAll('ul').forEach((item) => {
                                 item.classList.add('benefits');
@@ -1357,323 +1355,327 @@
                             height: unset;
                         }
                     </style>
-                    <fieldset class="group-select" id="supercheckout-fieldset">
-                        <div id="form_disable"
-                            style="background:#e0ffbb; opacity:0.1; z-index:99999; position: absolute; display:none;">
-                        </div>
-                        <div class="supercheckout-threecolumns supercheckout-container supercheckout-skin-generic "
-                            id="supercheckout-columnleft">
-                            <div class="row">
-                                <div class="col-lg-6 col-md-6 col-sm-12">
-                                    <div class="supercheckout-column-left columnleftsort custom-panel" id=""
-                                        style="padding: 6px;">
-                                        <div id="checkoutLogin">
-                                            <input type="hidden" name="email" value="guest_customer@storola.net">
-                                        </div>
-                                        <div class="supercheckout-blocks" data-column="1" data-row="1"
-                                            data-column-inside="0">
-                                            <h1 class="m-0"
-                                                style="margin:0px;padding: 15px;color:black;font-size: 16px;text-align:center;background:#fff;font-weight:bold">
-                                                অর্ডার সম্পন্ন করতে নিচের ফর্মটি পূরণ করে <span
-                                                    style="color:red;">"অর্ডার কনফার্ম করুন"</span> বাটনে ক্লিক করুন।
-                                            </h1>
-                                            <div id="checkoutBillingAddress">
-                                                <div id="payment-new" style="display: block;">
-                                                    <div id="payment_address_table" class="supercheckout-form">
-                                                        <div class="sort_data" style="display: block;"
-                                                            data-percentage="1">
-                                                            <div class="form-group input-group">
-                                                                <span class="input-group-addon">
-                                                                    <i class="glyphicon glyphicon-user"></i>
-                                                                </span>
-                                                                <input type="text" name="firstname"
-                                                                    placeholder="আপনার নাম লিখুন" value=""
-                                                                    class="supercheckout-large-field form-control">
-                                                            </div>
-                                                        </div>
-                                                        <div class="sort_data" style="display: block;"
-                                                            data-percentage="2">
-                                                            <div class="form-group input-group">
-                                                                <span class="input-group-addon">
-                                                                    <i class="glyphicon glyphicon-earphone"></i>
-                                                                </span>
-                                                                <input type="text" name="telephone"
-                                                                    placeholder="আপনার মোবাইল নাম্বার লিখুন" value=""
-                                                                    class="supercheckout-large-field form-control">
-                                                            </div>
-                                                        </div>
-                                                        <div class="sort_data" style="display: block;"
-                                                            data-percentage="2">
-                                                            <div class="form-group input-group">
-                                                                <span class="input-group-addon">
-                                                                    <i class="glyphicon glyphicon-map-marker"></i>
-                                                                </span>
-                                                                <input type="text" name="address_1"
-                                                                    placeholder="আপনার ঠিকানা লিখুন (থানা + জেলা ) সহ"
-                                                                    value=""
-                                                                    class="supercheckout-large-field form-control"
-                                                                    id="address_1">
-                                                            </div>
-                                                        </div>
-                                                        <div class="sort_data" style="display:  none;"
-                                                            data-percentage="18">
-                                                            <div class="" style="padding-left:0;">
-                                                                <div class="form-group ">
-                                                                    <label class="control-label" for="zone">এরিয়া
-                                                                        নির্বাচন করুন
-                                                                        <span style="display:  none;"
-                                                                            class="supercheckout-required">*</span></label>
-                                                                    <select name="zone_id"
-                                                                        class="supercheckout-large-field form-control">
-                                                                        <option value="">Please Select</option>
-                                                                        <option value="320">Barisal</option>
-                                                                        <option value="321">Chittagong</option>
-                                                                        <option value="322">Dhaka</option>
-                                                                        <option value="323">Khulna</option>
-                                                                        <option value="324">Rajshahi</option>
-                                                                        <option value="325">Sylhet</option>
-                                                                    </select>
+                    <form action="{{ Route('landingOrder') }}" method="POST">
+                        @csrf
+
+                        <fieldset class="group-select" id="supercheckout-fieldset">
+                            <div id="form_disable"
+                                style="background:#e0ffbb; opacity:0.1; z-index:99999; position: absolute; display:none;">
+                            </div>
+                            <div class="supercheckout-threecolumns supercheckout-container supercheckout-skin-generic "
+                                id="supercheckout-columnleft">
+                                <div class="row">
+                                    <div class="col-lg-6 col-md-6 col-sm-12">
+                                        <div class="supercheckout-column-left columnleftsort custom-panel" id=""
+                                            style="padding: 6px;">
+                                            <div class="supercheckout-blocks" data-column="1" data-row="1"
+                                                data-column-inside="0">
+                                                <h1 class="m-0"
+                                                    style="margin:0px;padding: 15px;color:black;font-size: 16px;text-align:center;background:#fff;font-weight:bold">
+                                                    অর্ডার সম্পন্ন করতে নিচের ফর্মটি পূরণ করে <span
+                                                        style="color:red;">"অর্ডার কনফার্ম করুন"</span> বাটনে ক্লিক
+                                                    করুন।
+                                                </h1>
+                                                <div id="checkoutBillingAddress">
+                                                    <div id="payment-new" style="display: block;">
+                                                        <div id="payment_address_table" class="supercheckout-form">
+                                                            <div class="sort_data" style="display: block;"
+                                                                data-percentage="1">
+                                                                <div class="form-group input-group">
+                                                                    <span class="input-group-addon">
+                                                                        <i class="glyphicon glyphicon-user"></i>
+                                                                    </span>
+                                                                    <input type="text" name="name"
+                                                                        placeholder="আপনার নাম লিখুন" value=""
+                                                                        class="supercheckout-large-field form-control"
+                                                                        required>
                                                                 </div>
                                                             </div>
+                                                            <div class="sort_data" style="display: block;"
+                                                                data-percentage="2">
+                                                                <div class="form-group input-group">
+                                                                    <span class="input-group-addon">
+                                                                        <i class="glyphicon glyphicon-earphone"></i>
+                                                                    </span>
+                                                                    <input type="text" name="number"
+                                                                        placeholder="আপনার মোবাইল নাম্বার লিখুন"
+                                                                        value=""
+                                                                        class="supercheckout-large-field form-control"
+                                                                        required>
+                                                                </div>
+                                                            </div>
+                                                            <div class="sort_data" style="display: block;"
+                                                                data-percentage="2">
+                                                                <div class="form-group input-group">
+                                                                    <span class="input-group-addon">
+                                                                        <i class="glyphicon glyphicon-map-marker"></i>
+                                                                    </span>
+                                                                    <input type="text" name="address"
+                                                                        placeholder="আপনার ঠিকানা লিখুন (থানা + জেলা ) সহ"
+                                                                        value=""
+                                                                        class="supercheckout-large-field form-control"
+                                                                        id="address" required>
+                                                                </div>
+                                                            </div>
+
+                                                        </div>
+                                                    </div>
+                                                    <div id="supercheckout-comments"
+                                                        style="display:   block !important;">
+                                                        <div class="form-group input-group">
+                                                            <span class="input-group-addon">
+                                                                <i class="glyphicon glyphicon-comment"></i>
+                                                            </span>
+                                                            <input type="text" id="supercheckout-comment_order"
+                                                                name="comment" placeholder="কোনো মন্তব্য থাকলে লিখুন"
+                                                                class="supercheckout-large-field form-control">
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div id="supercheckout-comments" style="display:   block !important;">
-                                                    <div class="form-group input-group">
-                                                        <span class="input-group-addon">
-                                                            <i class="glyphicon glyphicon-comment"></i>
-                                                        </span>
-                                                        <input type="text" id="supercheckout-comment_order"
-                                                            name="comment" placeholder="কোনো মন্তব্য থাকলে লিখুন"
-                                                            class="supercheckout-large-field form-control">
+                                            </div>
+                                            <div class="supercheckout-blocks" data-column="1" data-row="1"
+                                                data-column-inside="0">
+                                                <div class="opc_shipping_method">
+                                                    <label class="control-label" for="address">এলাকা নির্বাচন
+                                                        করুন</label>
+                                                    <div id="shipping-method">
+                                                        <div class="supercheckout-checkout-content"></div>
+                                                        @foreach($pageInfo->delivery->deleveryCharges as $index => $zone)
+                                                            <li class="highlight">
+                                                                <div class="radio">
+                                                                    <input type="radio" name="shipping_method"
+                                                                        onchange="handleShippingChange(event,'{{ $zone->id }}')"
+                                                                        value="{{ $zone->id }}" id="{{ $zone->id }}" @if ($index == 0) checked="checked" @endif>
+                                                                    <label for="{{ $zone->id }}">
+                                                                        {{ $zone->name }}
+                                                                        <span
+                                                                            class="supercheckout-shipping-small-title shippingPrice"
+                                                                            style="display: inline;"
+                                                                            for="{{ $zone->id }}">&nbsp;&nbsp;৳{{$zone->charge}}</span>
+                                                                    </label>
+                                                                </div>
+                                                            </li>
+                                                        @endforeach
                                                     </div>
                                                 </div>
-                                                <input name="use_for_shipping" id="shipping_use" type="checkbox"
-                                                    checked="" style="visibility: hidden;">
                                             </div>
                                         </div>
-                                        <div class="supercheckout-blocks" data-column="1" data-row="1"
-                                            data-column-inside="0">
-                                            <div class="opc_shipping_method">
-                                                <label class="control-label" for="address_1">এলাকা নির্বাচন করুন</label>
-                                                <div id="shipping-method">
+
+                                    </div>
+                                    <div class="col-lg-5 col-md-5 col-sm-12">
+                                        <div id="product" style="padding: 6px;">
+                                            <input type="hidden" name="product_id" value="{{ $pageInfo->product->id}}">
+                                        </div>
+                                        <div class="supercheckout-blocks confirmCheckoutBack" data-column="2"
+                                            data-row="1" data-column-inside="0" style="display: ;padding: 6px;">
+                                            <div class="opc_shoppingcart custom-panel">
+                                                <h1 class="m-0"
+                                                    style="margin:0px;padding: 15px;color:black;font-size: 16px;text-align:center;background:#fff;font-weight:bold">
+                                                    আপনার অর্ডার</h1>
+                                                <div class="loader" id="confirmLoader" style="display: none;"></div>
+                                                <div id="confirmCheckout">
+                                                    <script type="text/javascript" no-defer="">var a = $('#supercheckout-columnleft').height();
+                                                        var d = $('#supercheckout_login_option_box').height();
+                                                        var e = a - d;
+                                                        $('#columnleft-1').css('min-height', e + 'px');
+                                                        //  $('#columnleft-3').css('min-height', e + 'px');</script>
                                                     <div class="supercheckout-checkout-content"></div>
-                                                    @foreach ($pageInfo->delivery->charges as $zone)
-                                                        <li class="highlight">
-                                                            <div class="radio">
-                                                                <input type="radio" name="shipping_method"
-                                                                    value="insidedhaka.insidedhaka"
-                                                                    id="insidedhaka.insidedhaka" checked="checked">
-                                                                <label for="insidedhaka.insidedhaka">
-                                                                    {{ $zone->name }}
-                                                                    <span
-                                                                        class="supercheckout-shipping-small-title shippingPrice"
-                                                                        style="display: inline;"
-                                                                        for="insidedhaka.insidedhaka">&nbsp;&nbsp;৳60</span>
-                                                                </label>
-                                                            </div>
-                                                        </li>
-                                                    @endforeach
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-lg-5 col-md-5 col-sm-12">
-                                    <div id="product" style="padding: 6px;">
-                                        <input type="hidden" name="product_id" value="393">
-                                    </div>
-                                    <div class="supercheckout-blocks confirmCheckoutBack" data-column="2" data-row="1"
-                                        data-column-inside="0" style="display: ;padding: 6px;">
-                                        <div class="opc_shoppingcart custom-panel">
-                                            <h1 class="m-0"
-                                                style="margin:0px;padding: 15px;color:black;font-size: 16px;text-align:center;background:#fff;font-weight:bold">
-                                                আপনার অর্ডার</h1>
-                                            <div class="loader" id="confirmLoader" style="display: none;"></div>
-                                            <div id="confirmCheckout">
-                                                <script type="text/javascript" no-defer="">var a = $('#supercheckout-columnleft').height();
-                                                    var d = $('#supercheckout_login_option_box').height();
-                                                    var e = a - d;
-                                                    $('#columnleft-1').css('min-height', e + 'px');
-                                                    //  $('#columnleft-3').css('min-height', e + 'px');</script>
-                                                <div class="supercheckout-checkout-content"></div>
-                                                <table class="supercheckout-summary table table-bordered shoppingTable">
-                                                    <tbody>
-                                                        <tr>
-                                                            <td style="width:100%;display:   ;"
-                                                                class="supercheckout-name text-left td-product">
-                                                                <div class="checkout-products"
-                                                                    style="display:flex;justify-content:flex-start;align-items:center;">
-                                                                    <picture>
-                                                                        <source
-                                                                            srcset="{{ asset('storage/app/public/product/thumbnail/' . $pageInfo->product->thumbnail)}}"
-                                                                            type="image/webp">
-                                                                        <img style="max-width:60px;margin-right:10px;"
-                                                                            src="{{ asset('storage/app/public/product/thumbnail/' . $pageInfo->product->thumbnail)}}"
-                                                                            loading="lazy">
-                                                                    </picture>
-                                                                    <div>
-                                                                        <a data-toggle="popover"
-                                                                            data-title="MINTOX Orange Exfoliating Whitening gel"
-                                                                            data-placement="right"
-                                                                            href="/product/{{$pageInfo->product->slug}}">
-                                                                            {{ $pageInfo->product->name }}l
-                                                                        </a>
+                                                    <table
+                                                        class="supercheckout-summary table table-bordered shoppingTable">
+                                                        <tbody>
+                                                            <tr>
+                                                                <td style="width:100%;display:   ;"
+                                                                    class="supercheckout-name text-left td-product">
+                                                                    <div class="checkout-products"
+                                                                        style="display:flex;justify-content:flex-start;align-items:center;">
+                                                                        <picture>
+                                                                            <source
+                                                                                srcset="{{ asset('storage/app/public/product/thumbnail/' . $pageInfo->product->thumbnail)}}"
+                                                                                type="image/webp">
+                                                                            <img style="max-width:60px;margin-right:10px;"
+                                                                                src="{{ asset('storage/app/public/product/thumbnail/' . $pageInfo->product->thumbnail)}}"
+                                                                                loading="lazy">
+                                                                        </picture>
+                                                                        <div>
+                                                                            <a data-toggle="popover"
+                                                                                data-title="MINTOX Orange Exfoliating Whitening gel"
+                                                                                data-placement="right"
+                                                                                href="{{ Route('product', [$pageInfo->product->slug]) }}">
+                                                                                {{ $pageInfo->product->name }}
+                                                                            </a>
+                                                                        </div>
                                                                     </div>
-                                                                </div>
-                                                            </td>
-                                                            <td style="width: 30%;display:   ;"
-                                                                class="supercheckout-qty supercheckout-product-qty-input">
-                                                                <div class="input-group">
-                                                                    <span class="input-group-btn">
-                                                                        <button type="button" id="10854"
-                                                                            class="cart_quantity_down qty-btn increase_button quantity-left-minus btn btn-primary btn-number"
-                                                                            onclick="updateQuantity(event, '{{ $pageInfo->product->id }}','minus');"
-                                                                            data-type="minus" data-field="">
-                                                                            <span class="fa fa-minus"></span>
-                                                                        </button>
-                                                                    </span>
-                                                                    <input class="form-control input-number quantitybox"
-                                                                        type="text" id="quantity" name="quantity"
-                                                                        value="1">
-                                                                    <span class="input-group-btn">
-                                                                        <button type="button" id="10854"
-                                                                            class="cart_quantity_down qty-btn decrease_button quantity-right-plus btn btn-primary btn-number"
-                                                                            onclick="updateQuantity(event, '{{ $pageInfo->product->id }}','plus');"
-                                                                            data-type="plus" data-field="">
-                                                                            <span class="fa fa-plus"></span>
-                                                                        </button>
-                                                                    </span>
-                                                                </div>
-                                                            </td>
-                                                            <td style="width: 25%;display:   ;"
-                                                                class="supercheckout-total" id="productPrice">
-                                                                ৳{{ $pageInfo->product->unit_price - (($pageInfo->product->unit_price * $pageInfo->product->discount) / 100) }}
-                                                            </td>
-                                                            <td style="display:   ;" class="supercheckout-total"
-                                                                id="viewProductPrice">
-                                                                ৳{{ $pageInfo->product->unit_price - (($pageInfo->product->unit_price * $pageInfo->product->discount) / 100) }}
-                                                            </td>
-                                                        </tr>
-                                                    </tbody>
-                                                </table>
+                                                                </td>
+                                                                <td style="width: 30%;display:   ;"
+                                                                    class="supercheckout-qty supercheckout-product-qty-input">
+                                                                    <div class="input-group">
+                                                                        <span class="input-group-btn">
+                                                                            <button type="button" id="10854"
+                                                                                class="cart_quantity_down qty-btn increase_button quantity-left-minus btn btn-primary btn-number"
+                                                                                onclick="updateQuantity(event, '{{ $pageInfo->product->id }}','minus');"
+                                                                                data-type="minus" data-field="">
+                                                                                <span class="fa fa-minus"></span>
+                                                                            </button>
+                                                                        </span>
+                                                                        <input
+                                                                            class="form-control input-number quantitybox"
+                                                                            type="text" id="quantity" name="quantity"
+                                                                            value="1">
+                                                                        <span class="input-group-btn">
+                                                                            <button type="button" id="10854"
+                                                                                class="cart_quantity_down qty-btn decrease_button quantity-right-plus btn btn-primary btn-number"
+                                                                                onclick="updateQuantity(event, '{{ $pageInfo->product->id }}','plus');"
+                                                                                data-type="plus" data-field="">
+                                                                                <span class="fa fa-plus"></span>
+                                                                            </button>
+                                                                        </span>
+                                                                    </div>
+                                                                </td>
+                                                                <td style="width: 25%;display:   ;"
+                                                                    class="supercheckout-total" id="productPrice">
+                                                                    @if ($pageInfo->product->discount_type == 'percent')
+                                                                        ৳{{ $pageInfo->product->unit_price - (($pageInfo->product->unit_price * $pageInfo->product->discount) / 100) }}
+                                                                    @else
+                                                                        ৳{{ ($pageInfo->product->unit_price - $pageInfo->product->discount) }}
+                                                                    @endif
+                                                                </td>
+                                                                <td style="display:   ;" class="supercheckout-total"
+                                                                    id="viewProductPrice">
+                                                                    @if ($pageInfo->product->discount_type == 'percent')
+                                                                        ৳{{ $pageInfo->product->unit_price - (($pageInfo->product->unit_price * $pageInfo->product->discount) / 100) }}
+                                                                    @else
+                                                                        ৳{{ ($pageInfo->product->unit_price - $pageInfo->product->discount) }}
+                                                                    @endif
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
 
-                                                <table class="supercheckout-totals table table-bordered totalTable">
-                                                    <tbody>
-                                                        <tr>
-                                                            <td class="title text-right"><b>Sub-Total </b></td>
-                                                            <td class="value text-right"><span class="price"
-                                                                    id="subTotal">৳{{ $pageInfo->product->unit_price - (($pageInfo->product->unit_price * $pageInfo->product->discount) / 100) }}</span>
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td class="title text-right"><b>Inside Dhaka City </b></td>
-                                                            <td class="value text-right"><span class="price"
-                                                                    id="deleveryCharge">৳{{$pageInfo->delivery->deleveryCharge->charge}}</span>
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td class="title text-right"><b>Total </b></td>
-                                                            <td class="value text-right"><span class="price"
-                                                                    id="totalAmount">৳{{ ($pageInfo->product->unit_price - (($pageInfo->product->unit_price * $pageInfo->product->discount) / 100)) + $pageInfo->delivery->deleveryCharge->charge }}</span>
-                                                            </td>
-                                                        </tr>
-                                                    </tbody>
-                                                </table>
-                                                <script>
-                                                    const quantity = document.getElementById('quantity')
-                                                    const productPrice = document.getElementById('productPrice')
-                                                    const subTotal = document.getElementById('subTotal')
-                                                    const deleveryCharge = document.getElementById('deleveryCharge')
-                                                    const totalAmount = document.getElementById('totalAmount')
-                                                    const viewProductPrice = document.getElementById('viewProductPrice')
-                                                    function updateQuantity(event, id, action) {
+                                                    <table class="supercheckout-totals table table-bordered totalTable">
+                                                        <tbody>
+                                                            <tr>
+                                                                <td class="title text-right"><b>Sub-Total </b></td>
+                                                                <td class="value text-right"><span class="price"
+                                                                        id="subTotal">
+                                                                        @if ($pageInfo->product->discount_type == 'percent')
+                                                                            ৳{{ $pageInfo->product->unit_price - (($pageInfo->product->unit_price * $pageInfo->product->discount) / 100) }}
+                                                                        @else
+                                                                            ৳{{ ($pageInfo->product->unit_price - $pageInfo->product->discount) }}
+                                                                        @endif
+                                                                    </span>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td class="title text-right"><b>Delivery Charge </b>
+                                                                </td>
+                                                                <td class="value text-right"><span class="price"
+                                                                        id="deleveryCharge">৳{{$pageInfo->delivery->deleveryCharge->charge}}</span>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td class="title text-right"><b>Total </b></td>
+                                                                <td class="value text-right"><span class="price"
+                                                                        id="totalAmount">৳{{ ($pageInfo->product->unit_price - (($pageInfo->product->unit_price * $pageInfo->product->discount) / 100)) + $pageInfo->delivery->deleveryCharge->charge }}</span>
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                    <script>
+                                                        const quantity = document.getElementById('quantity')
+                                                        const productPrice = document.getElementById('productPrice')
+                                                        const subTotal = document.getElementById('subTotal')
+                                                        const deleveryCharge = document.getElementById('deleveryCharge')
+                                                        const totalAmount = document.getElementById('totalAmount')
+                                                        const viewProductPrice = document.getElementById('viewProductPrice')
+                                                        function updateQuantity(event, id, action) {
 
-                                                        if (action == 'plus') {
-                                                            quantity.value = parseInt(quantity.value) + 1;
-                                                        } else if (action == 'minus' && parseInt(quantity.value) != 1) {
-                                                            quantity.value = parseInt(quantity.value) - 1;
+                                                            if (action == 'plus') {
+                                                                quantity.value = parseInt(quantity.value) + 1;
+                                                            } else if (action == 'minus' && parseInt(quantity.value) != 1) {
+                                                                quantity.value = parseInt(quantity.value) - 1;
+                                                            }
+
+                                                            const result = parseInt(quantity.value) * parseInt(productPrice.innerText.split('৳')[1])
+
+                                                            viewProductPrice.innerText = '৳' + result;
+                                                            subTotal.innerText = '৳' + result;
+
+                                                            const totalPrice = result + parseInt(deleveryCharge.innerText.split('৳')[1])
+
+                                                            totalAmount.innerText = '৳' + totalPrice
                                                         }
 
-                                                        const result = parseInt(quantity.value) * parseInt(productPrice.innerText.split('৳')[1])
 
-                                                        viewProductPrice.innerText = '৳' + result;
-                                                        subTotal.innerText = '৳' + result;
+                                                        function handleShippingChange(e, id) {
+                                                            e.preventDefault();
+                                                            axios.post('{{ Route('shippingChargeUpdate') }}', {
+                                                                id: id
+                                                            }).then(response => {
 
-                                                        const totalPrice = result + parseInt(deleveryCharge.innerText.split('৳')[1])
+                                                                const result = parseInt(quantity.value) * parseInt(productPrice.innerText.split('৳')[1])
 
-                                                        totalAmount.innerText = '৳' + totalPrice
-                                                    }
-                                                </script>
-                                            </div>
-                                            <div id="payment_display_block" class="supercheckout-blocks" data-column="1"
-                                                data-row="1" data-column-inside="0">
-                                                <div id="display_payment" style="display: block">
-                                                    <div class="payment_display_div">
-                                                        <div class="buttons">
-                                                            <div class="pull-right">
-                                                                <input type="button" value="Confirm Order"
-                                                                    id="button-confirm" data-loading-text="Loading..."
-                                                                    class="btn btn-primary">
+                                                                const totalPrice = result + response.data.charge
+
+                                                                deleveryCharge.innerText = '৳' + response.data.charge
+                                                                totalAmount.innerText = '৳' + totalPrice
+                                                            })
+                                                        }
+                                                    </script>
+
+
+                                                </div>
+                                                <div id="payment_display_block" class="supercheckout-blocks"
+                                                    data-column="1" data-row="1" data-column-inside="0">
+                                                    <div id="display_payment" style="display: block">
+                                                        <div class="payment_display_div">
+                                                            <div class="buttons">
+                                                                <div class="pull-right">
+                                                                    <input type="button" value="Confirm Order"
+                                                                        id="button-confirm"
+                                                                        data-loading-text="Loading..."
+                                                                        class="btn btn-primary">
+                                                                </div>
+                                                            </div>
+                                                            <script type="text/javascript">$('#button-confirm').on('click', function () {
+                                                                    $.ajax({
+                                                                        url: 'index.php?route=extension/payment/cod/confirm',
+                                                                        dataType: 'json',
+                                                                        beforeSend: function () {
+                                                                            $('#button-confirm').button('loading');
+                                                                        },
+                                                                        complete: function () {
+                                                                            $('#button-confirm').button('reset');
+                                                                        },
+                                                                        success: function (json) {
+                                                                            if (json['redirect']) {
+                                                                                location = json['redirect'];
+                                                                            }
+                                                                        },
+                                                                        error: function (xhr, ajaxOptions, thrownError) {
+                                                                            alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+                                                                        }
+                                                                    });
+                                                                });</script>
+                                                        </div>
+                                                    </div>
+                                                    <div class="supercheckout-checkout-content"></div>
+                                                    <button type="submit"
+                                                        style="width: 100%; border: none; background: #fff;">
+                                                        <div id="placeorderButton">
+                                                            <div id="buttonWithProgres" style="width:100%;">
+                                                                <div id="confirm_order" class="orangebutton"
+                                                                    style="display:block !important;">
+                                                                    অর্ডার কনফার্ম করুন</div>
                                                             </div>
                                                         </div>
-                                                        <script type="text/javascript">$('#button-confirm').on('click', function () {
-                                                                $.ajax({
-                                                                    url: 'index.php?route=extension/payment/cod/confirm',
-                                                                    dataType: 'json',
-                                                                    beforeSend: function () {
-                                                                        $('#button-confirm').button('loading');
-                                                                    },
-                                                                    complete: function () {
-                                                                        $('#button-confirm').button('reset');
-                                                                    },
-                                                                    success: function (json) {
-                                                                        if (json['redirect']) {
-                                                                            location = json['redirect'];
-                                                                        }
-                                                                    },
-                                                                    error: function (xhr, ajaxOptions, thrownError) {
-                                                                        alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
-                                                                    }
-                                                                });
-                                                            });</script>
-                                                    </div>
-                                                </div>
-                                                <div class="supercheckout-checkout-content"></div>
-                                                <div id="supercheckout-agree" style="margin-bottom: 2px; display:none;">
-                                                    <div class="">
-                                                        <input type="checkbox" name="agree" value="1" checked="checked"
-                                                            class="actual_checkbox_button">
-                                                        <p for="conditions_to_approve[terms-and-conditions]"
-                                                            style="margin: 0px; display: inline-block;cursor: pointer;vertical-align: middle;padding-left: 5px;"
-                                                            data-toggle="modal" data-target="#agree-model">
-                                                            I have read and agree to the <b>Terms &amp; Conditions</b>
-                                                        </p>
-                                                    </div>
-                                                </div>
-                                                <div id="supercheckout-privacy-policy"
-                                                    style="display: none; margin-bottom: 2px; ">
-                                                    <div class="">
-                                                        <input type="checkbox" name="privacy" value="1"
-                                                            class="actual_checkbox_button">
-                                                        <p style="vertical-align: middle;display: inline-block;cursor: pointer; margin: 0px"
-                                                            data-toggle="modal" data-target="#privacy-model">
-                                                            I have read and agree to the <b>Privacy Policy</b></p>
-                                                    </div>
-                                                </div>
-                                                <div id="placeorderButton">
-                                                    <div id="buttonWithProgres" style="width:100%;">
-                                                        <div id="confirm_order" class="orangebutton"
-                                                            style="display:block !important;">
-                                                            অর্ডার কনফার্ম করুন</div>
-                                                    </div>
+                                                    </button>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                    </fieldset>
+                        </fieldset>
+                    </form>
                 </div>
             </div>
         </div>
@@ -1682,635 +1684,13 @@
         <div class="footer-copyright" style="text-align: center">
             <div class="container">
                 <p class="text-powered">
-                    suvojatra.com &copy; 2025 - Powered-by
-                    <a target="blank" href="https://storola.net/">
-                        <b>Storola.net</b></a>
+                    {{ env('SITE_URL') }} &copy; {{\Carbon\Carbon::now()->format('Y')}} - Powered-by
+                    <a target="blank" href="{{ Route('home') }}">
+                        <b>{{ env('SITE_URL') }}</b></a>
                 </p>
             </div>
         </div>
     </footer>
-    <div class="landing-product-footer">
-        <footer>
-            <div class="footer-links">
-                <div class="container">
-                    <div class="inner btn-group-vertical">
-                        <div class="row">
-                            <div class="col col-md-4 col-sm-6 col-xs-12">
-                                <div class="btn-group open">
-                                    <div id="btnGroupVerticalDrop1" data-toggle="dropdown"
-                                        class="dropdown-toggle title visible-xs">
-                                        About us<i class="visible-xs ion-chevron-down"></i>
-                                    </div>
-                                    <div class="dropdown-menu footer-content" aria-labelledby="btnGroupVerticalDrop1">
-                                        <div class="footer-contact-us">
-                                            <a href="index.html" class="logo-footer"><img
-                                                    src="../storola-client-space.sgp1.cdn.digitaloceanspaces.com/resources/clients/storola-clients/suvojatra.com/catalog/logo/SJ111.png"
-                                                    alt="logo-footer" style="height: 67px" /></a>
-                                            <p>
-                                                Welcome to our online store! We are a team of
-                                                passionate individuals who are dedicated to providing
-                                                our customers with high-quality products and excellent
-                                                service.
-                                            </p>
-                                            <div class="footer-phone">
-                                                <label>NEED HELP?</label>
-                                                <p>01916801184</p>
-                                            </div>
-                                        </div>
-                                        <div class="social-block">
-                                            <div class="social">
-                                                <a href="https://www.facebook.com/suvojatrabd" class="Facebook"
-                                                    target="_blank" title="Facebook"><i
-                                                        class="ion-social-facebook"></i><span>facebook</span></a>
-                                                <a href="#" target="_blank" class="instagram" title="Instagram"><i
-                                                        class="ion-social-instagram-outline"></i><span>instagram</span></a>
-                                                <a href="#" target="_blank" class="youtube" title="Youtube"><i
-                                                        class="ion-social-youtube-outline"></i><span>youtube</span></a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col col-md-2 col-sm-6 col-xs-12">
-                                <div class="btn-group">
-                                    <div id="btnGroupVerticalDrop2" data-toggle="dropdown"
-                                        class="dropdown-toggle title">
-                                        Information<i class="visible-xs ion-chevron-down"></i>
-                                    </div>
-                                    <div class="dropdown-menu footer-content footer-information"
-                                        aria-labelledby="btnGroupVerticalDrop2">
-                                        <ul class="list-unstyled">
-                                            <li><a href="about_us.html">About Us</a></li>
-                                            <li>
-                                                <a href="delivery.html">Delivery Information</a>
-                                            </li>
-                                            <li><a href="privacy.html">Privacy Policy</a></li>
-                                            <li><a href="terms.html">Terms &amp; Conditions</a></li>
-                                            <li>
-                                                <a href="information-contact.html">Contact Us</a>
-                                            </li>
-                                            <li><a href="account-return-add.html">Returns</a></li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col col-md-2 col-sm-6 col-xs-12">
-                                <div class="btn-group">
-                                    <div id="btnGroupVerticalDrop3" data-toggle="dropdown"
-                                        class="dropdown-toggle title">
-                                        Customer Service<i class="visible-xs ion-chevron-down"></i>
-                                    </div>
-                                    <div class="dropdown-menu footer-content" aria-labelledby="btnGroupVerticalDrop3">
-                                        <ul class="list-unstyled">
-                                            <li><a href="information-sitemap.html">Site Map</a></li>
-                                            <li><a href="account-login.html">Wish List</a></li>
-                                            <li><a href="product-manufacturer.html">Brands</a></li>
-                                            <li>
-                                                <a href="account-voucher.html">Gift Certificates</a>
-                                            </li>
-                                            <li><a href="affiliate-login.html">Affiliate</a></li>
-                                            <li><a href="product-special.html">Specials</a></li>
-                                            <li>
-                                                <a href="indexf319.html?route=account/guestorder">Order Tracking</a>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="footer-middle">
-                <div class="container">
-                    <div class="payment">
-                        <img src="../storola-client-space.sgp1.cdn.digitaloceanspaces.com/resources/commons/marketplace/catalog/ptblock/payment.png"
-                            alt="payment" />
-                    </div>
-                </div>
-            </div>
-            <div class="footer-copyright">
-                <div class="container">
-                    <p class="text-powered">
-                        suvojatra.com &copy; 2025 - Powered-by
-                        <a target="blank" href="https://storola.net/">
-                            <b>Storola.net</b></a>
-                    </p>
-                </div>
-            </div>
-        </footer>
-        <style>
-            /* Mobile bottom menu */
-            .mobile-bottom-menu {
-                position: fixed;
-                width: 100%;
-                bottom: 0;
-                left: 0;
-                right: 0;
-                color: #868e96;
-                background-color: #fff;
-                /* padding: 0.625rem 1.25rem; */
-                padding: 1rem 0 0.5rem 0;
-                z-index: 90;
-                box-shadow: -5px 10px 20px 0 rgba(43, 43, 43, 0.2);
-            }
-
-            .mobile-bottom-menu ul {
-                display: -webkit-box;
-                display: -ms-flexbox;
-                display: flex;
-                -webkit-box-orient: horizontal;
-                -webkit-box-direction: normal;
-                -ms-flex-flow: row wrap;
-                flex-flow: row wrap;
-                -webkit-box-align: center;
-                -ms-flex-align: center;
-                align-items: center;
-                -webkit-box-pack: justify;
-                -ms-flex-pack: justify;
-                justify-content: center;
-                padding: 0;
-                margin: 0;
-                list-style: none;
-                text-align: center;
-            }
-
-            .mobile-bottom-menu ul li {
-                -webkit-box-flex: 1;
-                -ms-flex: 1;
-                flex: 1;
-                padding-left: 5px;
-                padding-right: 5px;
-            }
-
-            .mobile-bottom-menu ul li:not(:last-child) {
-                border-right: 1px solid #e4e4e4;
-            }
-
-            .mobile-bottom-menu ul li a {
-                display: -webkit-inline-box;
-                display: -ms-inline-flexbox;
-                display: inline-flex;
-                -webkit-box-orient: vertical;
-                -webkit-box-direction: normal;
-                -ms-flex-direction: column;
-                flex-direction: column;
-                -webkit-box-align: center;
-                -ms-flex-align: center;
-                align-items: center;
-                font-size: 1rem;
-                font-weight: 500;
-                text-transform: uppercase;
-                color: currentColor;
-                text-decoration: none;
-                cursor: pointer;
-            }
-
-            /* .mobile-bottom-menu ul li:hover{
-                  color: var(--link-hover-color) !important;
-                  } */
-            .mobile-bottom-menu ul li a i {
-                font-size: 2.2rem;
-                font-style: normal;
-                font-weight: 400;
-                display: inline-block;
-                text-decoration: inherit;
-                text-align: center;
-                font-variant: normal;
-                text-transform: none;
-                -webkit-font-smoothing: antialiased;
-                -moz-osx-font-smoothing: grayscale;
-            }
-
-            .mobile-bottom-menu ul li a svg {
-                height: 23px;
-                width: 23px;
-                color: currentColor;
-            }
-
-            .mobile-bottom-menu ul li a span {
-                text-align: center;
-            }
-
-            /* Mobile bottom menu end*/
-            .mobile-bottom-menu .active {
-                color: var(--link-hover-color);
-            }
-
-            .mobile-category-items .list-categories-content {
-                max-height: 100%;
-            }
-
-            .mobile-category-items {
-                position: fixed;
-                left: 0;
-                top: 0;
-                height: 100%;
-                z-index: 666;
-                width: 88%;
-                max-width: 37.5rem;
-                background: #fff;
-                padding: 3rem !important;
-                overflow: auto;
-                text-align: left;
-            }
-
-            @media only screen and (max-width: 575px) {
-                .mobile-bottom-menu {
-                    display: block !important;
-                }
-
-                footer {
-                    margin-bottom: 62px;
-                }
-            }
-
-            .bottom-mobile-menu .mobile-menu-category.opened i {
-                display: inline-block;
-                color: #222;
-                background: #fff;
-            }
-
-            .bottom-mobile-menu .mobile-menu-category.opened i {
-                top: 1rem;
-                right: 1rem;
-                left: auto;
-                position: fixed;
-                margin: 0;
-                z-index: 556;
-                width: 4rem;
-            }
-
-            @media (max-width: 425px) {
-                .bottom-mobile-menu .mobile-menu-category.opened i {
-                    right: 0.2rem;
-                }
-            }
-
-            .bottom-mobile-menu .mobile-menu-category i {
-                height: 4rem;
-                line-height: 4rem;
-                text-align: center;
-                font-size: 2.6rem;
-                cursor: pointer;
-                position: absolute;
-                left: 0;
-                top: 50%;
-                margin-top: -2rem;
-                z-index: 3;
-            }
-
-            .bottom-mobile-menu .mobile-menu-category i {
-                font-size: 3rem;
-                display: none;
-                background: #fff;
-            }
-
-            .bottom-mobile-menu .mobile-menu-category.opened:before {
-                content: "";
-                width: 100%;
-                height: 100%;
-                position: fixed;
-                z-index: 555;
-                background: rgba(0, 0, 0, 0.7);
-                left: 0;
-                top: 0;
-            }
-        </style>
-        <div class="mobile-bottom-menu" style="display: none">
-            <nav class="mobile-menu-bottom-wrap">
-                <ul>
-                    <li class="mobile-menu-item">
-                        <a href="index.html">
-                            <svg fill="currentColor" viewBox="0 0 32 32" version="1.1"
-                                xmlns="http://www.w3.org/2000/svg" stroke="#000000" stroke-width="0.2">
-                                <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                                <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
-                                <g id="SVGRepo_iconCarrier">
-                                    <path
-                                        d="M31.772 16.043l-15.012-15.724c-0.189-0.197-0.449-0.307-0.721-0.307s-0.533 0.111-0.722 0.307l-15.089 15.724c-0.383 0.398-0.369 1.031 0.029 1.414 0.399 0.382 1.031 0.371 1.414-0.029l1.344-1.401v14.963c0 0.552 0.448 1 1 1h6.986c0.551 0 0.998-0.445 1-0.997l0.031-9.989h7.969v9.986c0 0.552 0.448 1 1 1h6.983c0.552 0 1-0.448 1-1v-14.968l1.343 1.407c0.197 0.204 0.459 0.308 0.722 0.308 0.249 0 0.499-0.092 0.692-0.279 0.398-0.382 0.411-1.015 0.029-1.413zM26.985 14.213v15.776h-4.983v-9.986c0-0.552-0.448-1-1-1h-9.965c-0.551 0-0.998 0.445-1 0.997l-0.031 9.989h-4.989v-15.777c0-0.082-0.013-0.162-0.032-0.239l11.055-11.52 10.982 11.507c-0.021 0.081-0.036 0.165-0.036 0.252z">
-                                    </path>
-                                </g>
-                            </svg>
-                            <span>Home</span>
-                        </a>
-                    </li>
-                    <li class="mobile-menu-item shop-menu">
-                        <a href="index6fed.html?route=product/category">
-                            <svg version="1.1" id="_x32_" xmlns="http://www.w3.org/2000/svg"
-                                xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 512 512" xml:space="preserve"
-                                fill="currentColor">
-                                <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                                <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
-                                <g id="SVGRepo_iconCarrier">
-                                    <style type="text/css">
-                                        .st0 {
-                                            fill: currentColor;
-                                        }
-                                    </style>
-                                    <g>
-                                        <path class="st0"
-                                            d="M54.425,266.279c22.795,0,42.291-14.024,50.394-33.914c8.103,19.89,27.598,33.914,50.394,33.914 c22.795,0,42.291-14.024,50.394-33.914c8.102,19.89,27.598,33.914,50.394,33.914c22.795,0,42.291-14.024,50.394-33.914 c8.103,19.89,27.598,33.914,50.394,33.914c22.795,0,42.291-14.024,50.394-33.914c8.102,19.89,27.598,33.914,50.394,33.914 c30.055,0,54.425-24.362,54.425-54.425H0C0,241.917,24.37,266.279,54.425,266.279z">
-                                        </path>
-                                        <path class="st0"
-                                            d="M438.283,44.886c-9.158-18.945-28.346-30.976-49.386-30.976H123.102c-21.039,0-40.228,12.032-49.386,30.976 L0,197.343h512L438.283,44.886z">
-                                        </path>
-                                        <path class="st0"
-                                            d="M441.11,429.665c-0.008,8.929-3.567,16.85-9.417,22.724c-5.866,5.85-13.788,9.41-22.717,9.418H268.094V302.563 h-24.189v159.244H103.023c-8.929-0.008-16.85-3.567-22.717-9.418c-5.85-5.874-9.409-13.795-9.416-22.724v-147.26H34.606v147.26 c0.015,37.795,30.622,68.409,68.417,68.425h305.953c37.795-0.016,68.402-30.63,68.418-68.425v-147.26H441.11V429.665z">
-                                        </path>
-                                        <rect x="189.882" y="350.941" class="st0" width="24.189" height="56.441"></rect>
-                                        <rect x="297.929" y="350.941" class="st0" width="24.189" height="56.441"></rect>
-                                    </g>
-                                </g>
-                            </svg>
-                            <span>Shop</span>
-                        </a>
-                    </li>
-                    <li class="mobile-menu-item">
-                        <a id="mobile-Categories-tab">
-                            <svg viewBox="0 -0.5 21 21" version="1.1" xmlns="http://www.w3.org/2000/svg"
-                                xmlns:xlink="http://www.w3.org/1999/xlink" fill="currentColor">
-                                <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                                <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
-                                <g id="SVGRepo_iconCarrier">
-                                    <title>list [#1540]</title>
-                                    <desc>Created with Sketch.</desc>
-                                    <defs></defs>
-                                    <g id="Page-1" stroke="none" stroke-width="1" fill="currentColor"
-                                        fill-rule="evenodd">
-                                        <g id="Dribbble-Light-Preview" transform="translate(-59.000000, -160.000000)"
-                                            fill="currentColor">
-                                            <g id="icons" transform="translate(56.000000, 160.000000)">
-                                                <path
-                                                    d="M6.15,14 C7.88985,14 9.3,15.343 9.3,17 C9.3,18.657 7.88985,20 6.15,20 C4.41015,20 3,18.657 3,17 C3,15.343 4.41015,14 6.15,14 L6.15,14 Z M6.15,16 C5.57145,16 5.1,16.449 5.1,17 C5.1,17.551 5.57145,18 6.15,18 C6.72855,18 7.2,17.551 7.2,17 C7.2,16.449 6.72855,16 6.15,16 L6.15,16 Z M6.15,0 C7.88985,0 9.3,1.343 9.3,3 C9.3,4.657 7.88985,6 6.15,6 C4.41015,6 3,4.657 3,3 C3,1.343 4.41015,0 6.15,0 L6.15,0 Z M6.15,2 C5.57145,2 5.1,2.449 5.1,3 C5.1,3.551 5.57145,4 6.15,4 C6.72855,4 7.2,3.551 7.2,3 C7.2,2.449 6.72855,2 6.15,2 L6.15,2 Z M6.15,7 C7.88985,7 9.3,8.343 9.3,10 C9.3,11.657 7.88985,13 6.15,13 C4.41015,13 3,11.657 3,10 C3,8.343 4.41015,7 6.15,7 L6.15,7 Z M6.15,9 C5.57145,9 5.1,9.449 5.1,10 C5.1,10.551 5.57145,11 6.15,11 C6.72855,11 7.2,10.551 7.2,10 C7.2,9.449 6.72855,9 6.15,9 L6.15,9 Z M11.4,18 L24,18 L24,16 L11.4,16 L11.4,18 Z M11.4,4 L24,4 L24,2 L11.4,2 L11.4,4 Z M11.4,11 L24,11 L24,9 L11.4,9 L11.4,11 Z"
-                                                    id="list-[#1540]"></path>
-                                            </g>
-                                        </g>
-                                    </g>
-                                </g>
-                            </svg>
-                            <span>Categories</span>
-                        </a>
-                    </li>
-                    <li class="mobile-menu-item">
-                        <a href="index64b3.html?route=product/search" id="menu-btn-search">
-                            <i class="fa fa-search"></i>
-                            <span>Search</span>
-                        </a>
-                    </li>
-                    <li class="mobile-menu-item">
-                        <a href="account-login.html?route=account/account">
-                            <svg viewBox="0 0 20 20" version="1.1" xmlns="http://www.w3.org/2000/svg"
-                                xmlns:xlink="http://www.w3.org/1999/xlink" fill="currentColor">
-                                <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                                <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
-                                <g id="SVGRepo_iconCarrier">
-                                    <title>profile_round [#1342]</title>
-                                    <desc>Created with Sketch.</desc>
-                                    <defs></defs>
-                                    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                                        <g id="Dribbble-Light-Preview" transform="translate(-140.000000, -2159.000000)"
-                                            fill="currentColor">
-                                            <g id="icons" transform="translate(56.000000, 160.000000)">
-                                                <path
-                                                    d="M100.562548,2016.99998 L87.4381713,2016.99998 C86.7317804,2016.99998 86.2101535,2016.30298 86.4765813,2015.66198 C87.7127655,2012.69798 90.6169306,2010.99998 93.9998492,2010.99998 C97.3837885,2010.99998 100.287954,2012.69798 101.524138,2015.66198 C101.790566,2016.30298 101.268939,2016.99998 100.562548,2016.99998 M89.9166645,2004.99998 C89.9166645,2002.79398 91.7489936,2000.99998 93.9998492,2000.99998 C96.2517256,2000.99998 98.0830339,2002.79398 98.0830339,2004.99998 C98.0830339,2007.20598 96.2517256,2008.99998 93.9998492,2008.99998 C91.7489936,2008.99998 89.9166645,2007.20598 89.9166645,2004.99998 M103.955674,2016.63598 C103.213556,2013.27698 100.892265,2010.79798 97.837022,2009.67298 C99.4560048,2008.39598 100.400241,2006.33098 100.053171,2004.06998 C99.6509769,2001.44698 97.4235996,1999.34798 94.7348224,1999.04198 C91.0232075,1998.61898 87.8750721,2001.44898 87.8750721,2004.99998 C87.8750721,2006.88998 88.7692896,2008.57398 90.1636971,2009.67298 C87.1074334,2010.79798 84.7871636,2013.27698 84.044024,2016.63598 C83.7745338,2017.85698 84.7789973,2018.99998 86.0539717,2018.99998 L101.945727,2018.99998 C103.221722,2018.99998 104.226185,2017.85698 103.955674,2016.63598"
-                                                    id="profile_round-[#1342]"></path>
-                                            </g>
-                                        </g>
-                                    </g>
-                                </g>
-                            </svg>
-                            <span>Account</span>
-                        </a>
-                    </li>
-                </ul>
-            </nav>
-        </div>
-        <div class="bottom-mobile-menu">
-            <div class="mobile-menu-category">
-                <i class="ion-android-close category-close" aria-hidden="true"></i>
-            </div>
-            <ul class="mobile-category-items" style="display: none">
-                <div class="list-group list-categories category-filters">
-                    <h3 class="filter-title">
-                        <a href="#categories" data-toggle="collapse">Categories</a>
-                    </h3>
-                    <div id="categories" class="list-categories-content collapse in">
-                        <a href="baby-products.html" class="list-group-item">Baby Products <span>0</span></a>
-                        <a href="bags-amp-shoes.html" class="list-group-item">Bags &amp; Shoes <span>0</span></a>
-                        <a href="ems.html" class="list-group-item">Ems <span>0</span></a>
-                        <a href="hanger.html" class="list-group-item">Hanger <span>2</span></a>
-                        <a href="headphone.html" class="list-group-item">Headphone <span>0</span></a>
-                        <a href="health-amp-beauty.html" class="list-group-item">Health &amp; Beauty <span>5</span></a>
-                        <a href="home-amp-gadgets.html" class="list-group-item">Home &amp; Gadgets <span>6</span></a>
-                        <a href="hot-offer.html" class="list-group-item">HOT OFFER <span>0</span></a>
-                        <a href="islamik-book.html" class="list-group-item">islamik book <span>0</span></a>
-                        <a href="jusar.html" class="list-group-item">Jusar <span>0</span></a>
-                        <a href="kitchen-gadgets.html" class="list-group-item">Kitchen Gadgets <span>7</span></a>
-                        <a href="kitchen-rack.html" class="list-group-item">Kitchen rack <span>0</span></a>
-                        <a href="qur-an-sharif.html" class="list-group-item">Quran sharif <span>0</span></a>
-                        <a href="security.html" class="list-group-item">Security <span>0</span></a>
-                        <a href="sports-amp-outdoor.html" class="list-group-item">Sports &amp; Outdoor
-                            <span>0</span></a>
-                    </div>
-                </div>
-            </ul>
-        </div>
-        <script>
-            window.addEventListener("load", function () {
-                $("#mobile-Categories-tab").click(function () {
-                    var categorymenu = $(".mobile-menu-category");
-                    if (categorymenu.hasClass("opened")) {
-                        $(".mobile-category-items").css({ display: "none" });
-                        categorymenu.removeClass("opened");
-                    } else {
-                        $(".mobile-category-items").css({ display: "block" });
-                        categorymenu.addClass("opened");
-                    }
-                });
-                $(".category-close").click(function () {
-                    $(".mobile-category-items").css({ display: "none" });
-                    $(".mobile-menu-category").removeClass("opened");
-                });
-
-                $(document).ready(function () {
-                    $(
-                        ".mobile-bottom-menu .mobile-menu-bottom-wrap .mobile-menu-item a"
-                    ).each(function () {
-                        var current_url = "product/product.html";
-                        var link = $(this).attr("href");
-                        let pattern = /(.*)\//g;
-                        let splitLink = current_url.split("index.html");
-
-                        if (link) {
-                            if (splitLink.length == 1 && link == "index.html") {
-                                $(this).closest(".mobile-menu-item").addClass("active");
-                            } else {
-                                if (splitLink[0] != "account") {
-                                    if (link.indexOf(current_url) > 0) {
-                                        $(this).closest(".mobile-menu-item").addClass("active");
-                                    }
-                                } else {
-                                    if (link.indexOf(splitLink[0]) > 0) {
-                                        $(this).closest(".mobile-menu-item").addClass("active");
-                                    }
-                                }
-                            }
-                        }
-                    });
-                });
-            });
-        </script>
-        <script>
-            window.addEventListener("load", function () {
-                $(document).ready(function () {
-                    $.ajax({
-                        url: "index.php?route=common/cart/getAjaxData",
-                        type: "get",
-                        dataType: "json",
-                        success: function (json) {
-                            // Update Cart Counts
-                            $("#cart .txt-count").html(json["cart_itemcount"]);
-                            $("#cart .text-cart").html(json["cart_total"]);
-                            updateFloatingCart();
-                            $("#cart > ul").load(
-                                "index1e1c.html?route=common/cart/info%20ul%20li"
-                            );
-
-                            // Update Wishlist counts
-                            $("#wishlist-total .txt-count").html(json["wishlist_count"]);
-
-                            // update account related menu
-                            $(".account-menus").hide();
-                            if (json["is_logged_in"]) {
-                                $(".logged-in-menus").show();
-                                $(".logged-out-menus").remove();
-                            } else {
-                                $(".logged-out-menus").show();
-                                $(".logged-in-menus").remove();
-                            }
-                        },
-                    });
-                });
-            });
-        </script>
-        <script no-defer>
-            function redirectOptionModal(product_id) {
-                $.ajax({
-                    type: "GET",
-                    url: "index.php?route=plaza/quickview/OptionProductQuickView",
-                    data: {
-                        product_id: product_id,
-                        view_option_product_modal: "option_product_modal",
-                    },
-                    beforeSend: function () {
-                        $("#quickview-content").html("");
-                        $(".quickview-load-img").show();
-                        $(".quickview-container").show();
-                    },
-                    complete: function () { },
-                    success: function (response) {
-                        if (response["success"] == true) {
-                            $(".quickview-load-img").hide();
-                            $("#quickview-content").html(response["product_details"]);
-                            $("#quickview-content").css({ visibility: "visible" });
-                            ptquickview.appendCloseFrameLink();
-                        }
-                    },
-                    error: function (error) { },
-                });
-            }
-            function orderNow(product_id, quantity) {
-                $.ajax({
-                    url: "index.php?route=checkout/cart/add",
-                    type: "post",
-                    data:
-                        "product_id=" +
-                        product_id +
-                        "&quantity=" +
-                        (typeof quantity != "undefined" ? quantity : 1) +
-                        "&pageType=listing",
-                    dataType: "json",
-                    beforeSend: function () {
-                        $("#cart > button").button("loading");
-                    },
-                    complete: function () {
-                        $("#cart > button").button("reset");
-                    },
-                    success: function (json) {
-                        $(".alert-dismissible, .text-danger").remove();
-
-                        if (json["redirect"]) {
-                            if (json["redirect_option_modal"]) {
-                                redirectOptionModal(product_id);
-                            } else {
-                                location = json["redirect"];
-                            }
-                        }
-
-                        if (json["success"]) {
-                            $("#content")
-                                .parent()
-                                .before(
-                                    '<div class="alert alert-success alert-dismissible"><i class="fa fa-check-circle"></i> ' +
-                                    json["success"] +
-                                    ' <button type="button" class="close" data-dismiss="alert">&times;</button></div>'
-                                );
-
-                            // Need to set timeout otherwise it wont update the total
-                            setTimeout(function () {
-                                $("#cart > button").html(
-                                    '<span id="cart-total"><svg height="16px" width="16px"><use xlink:href="#basket"></use></svg> ' +
-                                    json["total"] +
-                                    "</span>"
-                                );
-                            }, 100);
-
-                            // $('html, body').animate({ scrollTop: 0 }, 'slow');
-
-                            $("#cart > ul").load(
-                                "index1e1c.html?route=common/cart/info%20ul%20li"
-                            );
-                            window.location.href = "cart.html?route=checkout/checkout";
-                        }
-                    },
-                    error: function (xhr, ajaxOptions, thrownError) {
-                        alert(
-                            thrownError +
-                            "\r\n" +
-                            xhr.statusText +
-                            "\r\n" +
-                            xhr.responseText
-                        );
-                    },
-                });
-            }
-        </script>
-        <div class="widget-connect widget-connect-right">
-            <a class="widget-connect__button widget-connect__button-messenger button-slide-out"
-                href="https://m.me/suvojatrabd" data-toggle="tooltip" data-placement="left" title="" target="_blank"
-                data-original-title="FB Messenger"></a>
-            <a class="widget-connect__button widget-connect__button-whatsapp button-slide-out"
-                href="https://wa.me/8801916801184" data-toggle="tooltip" data-placement="left" title="" target="_blank"
-                data-original-title="WhatsApp"></a>
-            <div class="widget-connect__button-activator" style="background-color: #e51717">
-                <div class="widget-connect__button-activator-icon"></div>
-            </div>
-        </div>
-        <script type="text/javascript">
-            window.addEventListener("load", function () {
-                $(".widget-connect__button-activator-icon").click(function () {
-                    $(this).toggleClass("active");
-                    $(".widget-connect").toggleClass("active");
-                    $("a.widget-connect__button").toggleClass(
-                        "button-slide-out button-slide"
-                    );
-                });
-            });
-        </script>
-
-
-    </div>
 </body>
 
 </html>

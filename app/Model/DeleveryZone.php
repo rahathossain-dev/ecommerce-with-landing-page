@@ -15,4 +15,10 @@ class DeleveryZone extends Model
         return $this->hasOne(DeleveryCharge::class, 'zone_id', 'id');
     }
 
+    public function deleveryCharges()
+    {
+        return $this->hasMany(DeleveryCharge::class, 'zone_id', 'id');
+
+    }
+
 }

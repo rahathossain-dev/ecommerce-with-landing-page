@@ -220,7 +220,9 @@ Route::group(['prefix' => 'bkash'], function () {
 
 });
 Route::get('/product/page/{slug}', [LandingPageController::class, 'landingPage'])->name('landingPage');
-
+Route::post('/update-shipping-charge', [LandingPageController::class, 'shippingChargeUpdate'])->name('shippingChargeUpdate');
+Route::post('/order-complete', [LandingPageController::class, 'landingOrder'])->name('landingOrder');
+Route::get('/order-success',[LandingPageController::class, 'orderSuccess'])->name('orderSuccess');
 //fawry
 Route::any('/fawry-payment', 'FawryPaymentController@payment')->name('fawry-payment');
 Route::any('/fawry-response', 'FawryPaymentController@callback_response')->name('fawry-response');

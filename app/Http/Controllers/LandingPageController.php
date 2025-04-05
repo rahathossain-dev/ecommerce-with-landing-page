@@ -6,11 +6,13 @@ use App\Model\DeleveryCharge;
 use App\Model\DeleveryZone;
 use App\Model\LandingPage;
 use App\Model\LandingPageFaq;
+use App\Model\LandingPageOrder;
 use App\Model\LandingPageReview;
 use App\Model\LandingPageSection;
 use App\Model\PageSetup;
 use Illuminate\Http\Request;
 use Brian2694\Toastr\Facades\Toastr;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 use App\CPU\ImageManager;
 
@@ -242,10 +244,62 @@ class LandingPageController extends Controller
         }
 
         $pageInfo = PageSetup::where('landing_page_id', $page->id)->with('product', 'delivery', 'customer_reviews', 'delivery')->first();
-        return Response()->json($pageInfo);
+        // return Response()->json($pageInfo);
         return view('admin-views.landing-page.view', [
             'pageInfo' => $pageInfo
         ]);
+    }
+
+    public function shippingChargeUpdate(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'id' => 'required'
+        ]);
+        if ($validator->fails()) {
+            return Response()->json([
+                'status' => 401,
+                'errors' => $validator->errors()->all()
+            ]);
+        }
+
+        $result = DeleveryCharge::findOrFail($request->id);
+        return Response()->json($result);
+
+    }
+
+    public function landingOrder(Request $request)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'number' => 'required|max:30',
+            'address' => 'required',
+            'shipping_method' => 'required',
+            'product_id' => 'required',
+            'quantity' => 'required'
+        ]);
+
+        $order = LandingPageOrder::create([
+            'name' => $request->name,
+            'number' => $request->number,
+            'address' => $request->address,
+            'comment' => $request->comment,
+            'product_id' => $request->product_id,
+            'shipping_method' => $request->shipping_method,
+            'quantity' => $request->quantity
+        ]);
+
+        $orderData = LandingPageOrder::where('id', $order->id)->with('product', 'deliveryCharge')->first();
+        // return $orderData;
+
+        return view('admin-views.landing-page.order-success', [
+            'order' => $orderData
+        ]);
+
+    }
+
+    public function orderSuccess()
+    {
+        return view('admin-views.landing-page.order-success');
     }
 
 

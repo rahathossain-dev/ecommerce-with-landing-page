@@ -38,6 +38,6 @@ class PageSetup extends Model
 
     public function delivery()
     {
-        return $this->hasOne(DeleveryZone::class, 'id', 'delevery_id')->with('deleveryCharge', 'charges');
+        return $this->hasOne(DeleveryZone::class, 'id', 'delevery_id')->with('deleveryCharge', 'deleveryCharges');
     }
 }
